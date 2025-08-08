@@ -1,0 +1,249 @@
+/* General Body Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+/* Document Container */
+.document-container {
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    border-radius: 8px;
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+}
+
+header h2 {
+    color: #555;
+    font-size: 1.8em;
+    margin-top: 0;
+}
+
+header .author, header .date {
+    font-style: italic;
+    color: #777;
+    font-size: 0.9em;
+}
+
+/* New: Author Details Module */
+.author-details {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: #eaf6ff;
+    text-align: left;
+    font-size: 0.9em;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+}
+
+.author-details.hidden {
+    display: none; /* Use display: none for print media consistency */
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.author-details p {
+    margin: 5px 0;
+    text-align: left; /* Ensure text alignment is left within the box */
+}
+
+.author-details a {
+    color: #007bff;
+    text-decoration: none;
+    display: inline-flex; /* Use flexbox to align icon and text */
+    align-items: center; /* Vertically center icon and text */
+}
+
+.author-details a:hover {
+    text-decoration: underline;
+}
+
+.author-details a .fas.fa-envelope {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.toggle-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.toggle-button:hover {
+    background-color: #0056b3;
+}
+/* End New: Author Details Module */
+
+
+/* Section Styles */
+section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #ddd;
+}
+
+section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+section h3 {
+    color: #007bff;
+    font-size: 1.6em;
+    margin-bottom: 15px;
+    border-left: 5px solid #007bff;
+    padding-left: 10px;
+}
+
+section h4 {
+    color: #333;
+    font-size: 1.3em;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* Paragraphs, Lists */
+p {
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+ul, ol {
+    margin-bottom: 15px;
+    padding-left: 25px;
+}
+
+ul li, ol li {
+    margin-bottom: 8px;
+}
+
+/* Image Styles */
+.image-container {
+    text-align: center;
+    margin: 30px 0;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-container .caption {
+    font-style: italic;
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* Code/Preformatted Text - if any was needed */
+pre {
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 2px solid #007bff;
+    color: #777;
+    font-size: 0.9em;
+}
+
+/* Print Styles - for better PDF generation from browser */
+@media print {
+    body {
+        background-color: #fff;
+        padding: 0;
+    }
+
+    .document-container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+        width: 100%;
+    }
+
+    header, section, footer {
+        page-break-inside: avoid;
+    }
+
+    header {
+        border-bottom: 1px solid #ccc;
+    }
+    
+    section {
+        border-bottom: 1px dashed #eee;
+    }
+
+    .image-container {
+        border: none;
+        background-color: #fff;
+        padding: 0;
+    }
+
+    /* Ensure author details are visible when printed if they are toggled open */
+    .author-details.hidden {
+        display: none !important; /* Forces it to be hidden even if CSS transition causes issues */
+    }
+    .author-details:not(.hidden) {
+        display: block !important; /* Forces it to be block when not hidden */
+        opacity: 1 !important;
+        max-height: fit-content !important;
+        overflow: visible !important;
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+        margin-top: 15px !important;
+        margin-bottom: 0 !important;
+        border: 1px solid #007bff !important;
+        background-color: #eaf6ff !important;
+    }
+}

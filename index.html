@@ -1,0 +1,266 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa: Configuración e Instalación de LiteBeam 5AC y Router Tenda</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="document-container">
+        <header>
+            <h1>Guía Completa de Configuración e Instalación</h1>
+            <h2>LiteBeam 5AC y Router Tenda</h2>
+            <p class="author">
+                Preparado por: Tarciano ENZEMA NCHAMA
+                <button id="toggleAuthorDetails" class="toggle-button">Ver detalles</button>
+            </p>
+            <div id="authorDetails" class="author-details hidden">
+                <p><strong>Formación académica:</strong> Finalista universario de la UNGE</p>
+                <p><strong>Facultad:</strong> Ciencias económicas, gestión y administración</p>
+                <p><strong>Departamento:</strong> Informática de gestión empresarial</p>
+                <p><strong>Contacto:</strong> <a href="mailto:enzemajr@gmail.com"><i class="fas fa-envelope"></i> enzemajr@gmail.com</a></p>
+            </div>
+            <p class="date">Fecha de elaboración: 08/08/2025</p>
+        </header>
+
+        <section id="introduction">
+            <h3>Introducción</h3>
+            <p>Esta guía detallada le proporcionará los pasos necesarios para configurar e instalar un enlace inalámbrico punto a punto utilizando dispositivos Ubiquiti LiteBeam 5AC y distribuir la conexión a internet mediante un router Tenda. Este tipo de configuración es ideal para llevar conectividad a edificios o ubicaciones remotas donde no es posible extender el cableado.</p>
+        </section>
+
+        <section id="litebeam-overview">
+            <h3>1. LiteBeam 5AC: Descripción General y Componentes</h3>
+            <p>El Ubiquiti LiteBeam 5AC es un dispositivo CPE (Customer Premises Equipment) diseñado para enlaces inalámbricos de larga distancia. Opera en la banda de 5 GHz y utiliza la tecnología airMAX ac para ofrecer un alto rendimiento.</p>
+            <div class="image-container">
+                <img src="litebeam.png" alt="Dispositivo Ubiquiti LiteBeam 5AC">
+                <p class="caption">Figura 1: Dispositivo Ubiquiti LiteBeam 5AC</p>
+            </div>
+            <h4>Componentes Clave:</h4>
+            <ul>
+                <li><strong>Antena Integrada:</strong> Proporciona un patrón de haz direccional.</li>
+                <li><strong>Radio airMAX ac:</strong> Módulo inalámbrico de alta velocidad.</li>
+                <li><strong>Puerto Ethernet:</strong> Para alimentación PoE y conexión a la red.</li>
+                <li><strong>PoE Injector (Adaptador PoE):</strong> Necesario para alimentar el dispositivo a través del cable Ethernet.</li>
+            </ul>
+        </section>
+
+        <section id="litebeam-configuration">
+            <h3>2. LiteBeam 5AC: Configuración</h3>
+            <p>La configuración del LiteBeam 5AC se realiza a través de su interfaz web. Generalmente, se configuran dos LiteBeam: uno como <strong>Punto de Acceso (AP)</strong> y otro como <strong>Estación (Station)</strong> para crear el enlace.</p>
+
+            <h4>2.1. Acceso Inicial al LiteBeam</h4>
+            <ol>
+                <li>Conecte su computadora al puerto LAN del PoE Injector. Conecte el puerto "PoE" del injector al puerto Ethernet del LiteBeam.</li>
+                <li>Configure la IP de su computadora en el mismo segmento que la IP por defecto del LiteBeam (ej. 192.168.1.X, donde X no es 20).</li>
+                <li>Abra un navegador web y acceda a la dirección IP por defecto del LiteBeam: <strong>192.168.1.20</strong>.</li>
+                <li>Las credenciales por defecto suelen ser: Usuario: <strong>ubnt</strong>, Contraseña: <strong>ubnt</strong>. Se le pedirá cambiar la contraseña al primer inicio de sesión.</li>
+            </ol>
+
+            <h4>2.2. Configuración del LiteBeam como Punto de Acceso (AP)</h4>
+            <p>Este LiteBeam será el "emisor" de la señal, conectado a la fuente de internet.</p>
+            <ol>
+                <li><strong>Paso 1: Pestaña "Wireless"</strong>
+                    <ul>
+                        <li><strong>Wireless Mode:</strong> Seleccione "Access Point".</li>
+                        <li><strong>SSID:</strong> Ingrese un nombre para su red (ej. "Enlace_Principal_AP").</li>
+                        <li><strong>Channel Width:</strong> Se recomienda 40 MHz para un buen rendimiento.</li>
+                        <li><strong>Frequency List:</strong> Active "Auto" o seleccione una frecuencia libre.</li>
+                        <li><strong>Security:</strong> Seleccione "WPA2-AES" y establezca una contraseña fuerte para el enlace.</li>
+                    </ul>
+                    <div class="image-container">
+                        <img src="litebeam_interface_ap.png" alt="Configuración Wireless del LiteBeam como AP">
+                        <p class="caption">Figura 2: Interfaz de Configuración Wireless (AP)</p>
+                    </div>
+                </li>
+                <li><strong>Paso 2: Pestaña "Network"</strong>
+                    <ul>
+                        <li><strong>Network Mode:</strong> Router o Bridge. Para un enlace transparente, seleccione "Bridge".</li>
+                        <li><strong>IP Address:</strong> Asigne una IP estática fuera del rango DHCP de su router principal (ej. 192.168.1.250).</li>
+                        <li><strong>Netmask:</strong> 255.255.255.0</li>
+                        <li><strong>Gateway IP:</strong> La IP de su router principal (ej. 192.168.1.1).</li>
+                        <li><strong>Primary DNS:</strong> Use la IP del Gateway o un DNS público (ej. 8.8.8.8).</li>
+                    </ul>
+                </li>
+                <li><strong>Paso 3: Guardar Cambios</strong>
+                    <ul>
+                        <li>Haga clic en "Change" y luego en "Apply" en la parte superior derecha para guardar los cambios.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>2.3. Configuración del LiteBeam como Estación (Station)</h4>
+            <p>Este LiteBeam será el "receptor" de la señal, ubicado en el lugar donde desea tener internet.</p>
+            <ol>
+                <li><strong>Paso 1: Pestaña "Wireless"</strong>
+                    <ul>
+                        <li><strong>Wireless Mode:</strong> Seleccione "Station".</li>
+                        <li><strong>SSID:</strong> Haga clic en "Select" y busque el SSID del AP configurado anteriormente (ej. "Enlace_Principal_AP"). Selecciónelo y haga clic en "Select".</li>
+                        <li>Ingrese la contraseña de seguridad que configuró en el AP.</li>
+                    </ul>
+                    <div class="image-container">
+                        <img src="litebeam_interface_station.png" alt="Configuración Wireless del LiteBeam como Station">
+                        <p class="caption">Figura 3: Interfaz de Configuración Wireless (Station)</p>
+                    </div>
+                </li>
+                <li><strong>Paso 2: Pestaña "Network"</strong>
+                    <ul>
+                        <li><strong>Network Mode:</strong> "Bridge" para un enlace transparente.</li>
+                        <li><strong>IP Address:</strong> Asigne una IP estática diferente a la del AP, pero en el mismo segmento (ej. 192.168.1.249).</li>
+                        <li><strong>Netmask:</strong> 255.255.255.0</li>
+                        <li><strong>Gateway IP:</strong> La IP de su router principal (ej. 192.168.1.1).</li>
+                        <li><strong>Primary DNS:</strong> Use la IP del Gateway o un DNS público (ej. 8.8.8.8).</li>
+                    </ul>
+                </li>
+                <li><strong>Paso 3: Guardar Cambios</strong>
+                    <ul>
+                        <li>Haga clic en "Change" y luego en "Apply" para guardar los cambios.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+        <section id="tenda-router-overview">
+            <h3>3. Router Tenda: Descripción General y Componentes</h3>
+            <p>Un router Tenda es un dispositivo de red común que permite compartir una conexión a internet entre múltiples dispositivos, tanto por cable (Ethernet) como de forma inalámbrica (Wi-Fi).</p>
+            <div class="image-container">
+                <img src="tenda_router.png" alt="Dispositivo Router Tenda">
+                <p class="caption">Figura 4: Dispositivo Router Tenda</p>
+            </div>
+            <h4>Puertos y Luces Indicadoras:</h4>
+            <ul>
+                <li><strong>Puerto WAN (azul o de otro color distintivo):</strong> Para conectar el internet entrante (en este caso, del LiteBeam Station).</li>
+                <li><strong>Puertos LAN (amarillos):</strong> Para conectar dispositivos por cable (computadoras, consolas).</li>
+                <li><strong>Antenas Wi-Fi:</strong> Para la conectividad inalámbrica.</li>
+                <li><strong>Luces LED:</strong> Indican el estado de energía, internet, Wi-Fi y puertos LAN.</li>
+            </ul>
+        </section>
+
+        <section id="tenda-router-configuration">
+            <h3>4. Router Tenda: Configuración</h3>
+            <p>El router Tenda será el encargado de distribuir la conexión que recibe del LiteBeam Station.</p>
+
+            <h4>4.1. Acceso Inicial al Router Tenda</h4>
+            <ol>
+                <li>Conecte su computadora a uno de los puertos LAN amarillos del router Tenda.</li>
+                <li>Abra un navegador web y acceda a la dirección IP por defecto del router Tenda. Suele ser <strong>192.168.0.1</strong> o <strong>192.168.1.1</strong>. Verifique la etiqueta en la parte inferior del router si no está seguro.</li>
+                <li>Las credenciales por defecto suelen ser: Usuario: <strong>admin</strong>, Contraseña: <strong>admin</strong> (o no pedir contraseña y pedirle que configure una).</li>
+            </ol>
+
+            <h4>4.2. Configuración de Internet</h4>
+            <ol>
+                <li>Una vez dentro de la interfaz, el router Tenda suele tener un asistente de configuración rápida.</li>
+                <li><strong>Tipo de Conexión a Internet:</strong> Seleccione "DHCP" o "Dynamic IP". Esto es crucial, ya que el LiteBeam Station (en modo Bridge) pasará la IP de internet directamente al router Tenda.</li>
+                <li>Guarde la configuración. El router debería obtener una IP pública (o la IP del gateway de su ISP) automáticamente.</li>
+                <div class="image-container">
+                    <img src="tenda_interface.png" alt="Configuración de Internet del Router Tenda">
+                    <p class="caption">Figura 5: Interfaz de Configuración de Internet del Router Tenda</p>
+                </div>
+            </ol>
+
+            <h4>4.3. Configuración de Wi-Fi (Red Local)</h4>
+            <ol>
+                <li>Vaya a la sección de "Configuración Inalámbrica" o "Wi-Fi Settings".</li>
+                <li><strong>Nombre de Red (SSID):</strong> Asigne un nombre a su red Wi-Fi (ej. "MiCasa_WiFi").</li>
+                <li><strong>Contraseña de Wi-Fi:</strong> Establezca una contraseña fuerte para su red Wi-Fi.</li>
+                <li>Seleccione "WPA2-PSK" como método de seguridad.</li>
+                <li>Guarde los cambios.</li>
+            </ol>
+        </section>
+
+        <section id="physical-installation">
+            <h3>5. Conexión e Instalación Física</h3>
+            <p>La correcta conexión física es fundamental para el funcionamiento del sistema.</p>
+            <div class="image-container">
+                <img src="connection_diagram.png" alt="Diagrama de Conexión LiteBeam y Router Tenda">
+                <p class="caption">Figura 6: Diagrama de Conexión Completa</p>
+            </div>
+            <ol>
+                <li><strong>Instalación del LiteBeam AP:</strong>
+                    <ul>
+                        <li>Monte el LiteBeam AP en un lugar elevado y sin obstrucciones, con visión directa hacia la ubicación del LiteBeam Station.</li>
+                        <li>Conecte un cable Ethernet del puerto LAN de su router principal (con internet) al puerto LAN del PoE Injector del LiteBeam AP.</li>
+                        <li>Conecte el puerto PoE del injector al puerto Ethernet del LiteBeam AP.</li>
+                    </ul>
+                </li>
+                <li><strong>Instalación del LiteBeam Station:</strong>
+                    <ul>
+                        <li>Monte el LiteBeam Station en un lugar elevado y sin obstrucciones, con visión directa hacia el LiteBeam AP.</li>
+                        <li>Conecte el puerto Ethernet del LiteBeam Station al puerto PoE del PoE Injector del Station.</li>
+                        <li>Conecte el puerto LAN del PoE Injector del Station al puerto WAN (azul) del router Tenda.</li>
+                    </ul>
+                </li>
+                <li><strong>Conexión del Router Tenda:</strong>
+                    <ul>
+                        <li>Conecte el router Tenda a la corriente eléctrica.</li>
+                        <li>Los dispositivos que usen cable se conectarán a los puertos LAN del router Tenda.</li>
+                        <li>Los dispositivos inalámbricos se conectarán a la red Wi-Fi del router Tenda.</li>
+                    </ul>
+                </li>
+                <li><strong>Alineación de los LiteBeam:</strong>
+                    <ul>
+                        <li>Una vez encendidos ambos LiteBeam, utilice las luces LED de señal en la parte posterior del LiteBeam (o la herramienta de alineación en la interfaz web) para ajustar la orientación y lograr la máxima intensidad de señal entre ellos. Esto es crítico para un enlace estable.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+        <section id="troubleshooting">
+            <h3>6. Verificación y Resolución de Problemas</h3>
+            <h4>6.1. Verificación de la Conexión:</h4>
+            <ul>
+                <li><strong>Luces del LiteBeam:</strong> Verifique que las luces de señal estén encendidas y estables en ambos LiteBeam.</li>
+                <li><strong>Luces del Router Tenda:</strong> La luz de "Internet" o "WAN" en el router Tenda debe estar encendida y, preferiblemente, parpadeando.</li>
+                <li><strong>Ping:</strong> Desde una computadora conectada al router Tenda, intente hacer ping a google.com.</li>
+                <li><strong>Navegación:</strong> Intente abrir una página web.</li>
+            </ul>
+            <h4>6.2. Problemas Comunes y Soluciones:</h4>
+            <ul>
+                <li><strong>No hay conexión a internet:</strong>
+                    <ul>
+                        <li>Verifique la alineación de los LiteBeam.</li>
+                        <li>Asegúrese de que el LiteBeam Station esté conectado al puerto WAN del router Tenda.</li>
+                        <li>Compruebe que el tipo de conexión a internet en el router Tenda sea "DHCP" o "Dynamic IP".</li>
+                        <li>Reinicie los tres dispositivos (router principal, LiteBeam AP, LiteBeam Station, router Tenda) en secuencia.</li>
+                    </ul>
+                </li>
+                <li><strong>No puedo acceder a la interfaz del LiteBeam:</strong>
+                    <ul>
+                        <li>Asegúrese de que la IP de su computadora esté en el mismo segmento que la IP del LiteBeam (192.168.1.X).</li>
+                        <li>Verifique el cableado y la alimentación PoE.</li>
+                    </ul>
+                </li>
+                <li><strong>Bajo rendimiento del enlace:</strong>
+                    <ul>
+                        <li>Revisar la alineación.</li>
+                        <li>Buscar interferencias en la frecuencia (cambiar canal en el LiteBeam AP).</li>
+                        <li>Asegurarse de que el "Channel Width" sea adecuado (40 MHz es un buen balance).</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 [Tarciano ENZEMA NCHAMA]. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('toggleAuthorDetails');
+            const authorDetails = document.getElementById('authorDetails');
+
+            if (toggleButton && authorDetails) {
+                toggleButton.addEventListener('click', () => {
+                    authorDetails.classList.toggle('hidden');
+                    if (authorDetails.classList.contains('hidden')) {
+                        toggleButton.textContent = 'Ver detalles';
+                    } else {
+                        toggleButton.textContent = 'Ocultar detalles';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
